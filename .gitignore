@@ -19,6 +19,9 @@
 /var/log/*
 !var/log/.gitkeep
 
+# Logs (docker)
+/docker/logs/*
+
 # Parameters
 /app/config/parameters.yml
 /app/config/parameters.ini
