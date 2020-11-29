@@ -110,7 +110,7 @@ class PhoneBookEntryController extends AbstractController
     {
         return $this->render('phone_book_entry/share.html.twig',[
             'entry' => $phoneBookEntryRepository->find($id),
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->findUsersWithoutCurrentlyLoggedIn($this->getUser()->getId()),
         ]);
     }
     /**

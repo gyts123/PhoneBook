@@ -36,6 +36,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function findUsersWithoutCurrentlyLoggedIn($userId)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.id != :val')
+            ->setParameter('val', $userId)
+            ->orderBy('s.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
