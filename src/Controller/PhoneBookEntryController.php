@@ -66,6 +66,8 @@ class PhoneBookEntryController extends AbstractController
 
     /**
      * @Route("/pbEntry/{id}/edit", name="phone_book_entry_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param PhoneBookEntry $phoneBookEntry
      * @return Response
      */
     public function edit(Request $request, PhoneBookEntry $phoneBookEntry): Response
@@ -104,17 +106,25 @@ class PhoneBookEntryController extends AbstractController
 
     /**
      * @Route("/pbEntry/{id}/share", name="phone_book_entry_share", methods={"GET"})
+     * @param int $id
+     * @param UserRepository $userRepository
+     * @param PhoneBookEntryRepository $phoneBookEntryRepository
      * @return Response
      */
     public function share(int $id, UserRepository $userRepository, PhoneBookEntryRepository $phoneBookEntryRepository): Response
     {
-        return $this->render('phone_book_entry/share.html.twig',[
+        return $this->render('phone_book_entry/share.html.twig', [
             'entry' => $phoneBookEntryRepository->find($id),
             'users' => $userRepository->findUsersWithoutCurrentlyLoggedIn($this->getUser()->getId()),
         ]);
     }
+
     /**
      * @Route("/pbEntry/{id}/{userId}/share", name="phone_book_entry_share_submit", methods={"GET"})
+     * @param int $id
+     * @param int $userId
+     * @param UserRepository $userRepository
+     * @param PhoneBookEntryRepository $phoneBookEntryRepository
      * @return Response
      */
     public function shareSubmit(int $id, int $userId, UserRepository $userRepository, PhoneBookEntryRepository $phoneBookEntryRepository): Response

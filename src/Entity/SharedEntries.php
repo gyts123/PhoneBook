@@ -58,6 +58,7 @@ class SharedEntries
 
         return $this;
     }
+
     public function getFkPhoneBookEntry()
     {
         return $this->fkPhoneBookEntry;

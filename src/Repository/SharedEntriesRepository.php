@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\PhoneBookEntry;
 use App\Entity\SharedEntries;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -24,32 +26,19 @@ class SharedEntriesRepository extends ServiceEntityRepository
         return $this->findBy(['fkUser' => $userId]);
     }
 
-    // /**
-    //  * @return ShatredEntries[] Returns an array of ShatredEntries objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findUserEntries(int $userId)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this->findBy(['fkUser' => $userId]);
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?ShatredEntries
+    public function findEntriesThatWereSharedByUser($userId)
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
+            ->innerJoin(PhoneBookEntry::class, 'p', Join::WITH, 's.fkPhoneBookEntry = p.id')
+            ->andWhere('p.fkUser = :val')
+            ->setParameter('val', $userId)
+            ->orderBy('p.name', 'ASC')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
 }

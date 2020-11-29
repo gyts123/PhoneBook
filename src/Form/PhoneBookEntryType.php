@@ -14,8 +14,7 @@ class PhoneBookEntryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('phoneNumber', TextType::class)
-        ;
+            ->add('phoneNumber', TextType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -12,12 +12,14 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-         if ($this->getUser()) {
-             return $this->redirectToRoute('phone_book_entry_index');
-         }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('phone_book_entry_index');
+        }
 
         $error = $authenticationUtils->getLastAuthenticationError();
 

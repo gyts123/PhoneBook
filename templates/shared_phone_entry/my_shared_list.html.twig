@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SharedPhoneEntryController!{% endblock %}
+
+{% block body %}
+    <h1>Shared PhoneBook</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>PhoneNumber</th>
+            <th>Shared With</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for shared_entry in shared_entries %}
+            <tr>
+                <td>{{ shared_entry.fkPhoneBookEntry.name }}</td>
+                <td>{{ shared_entry.fkPhoneBookEntry.phoneNumber }}</td>
+                <td>{{ shared_entry.fkUser.username }}</td>
+                <td>
+                    <a href="{{ path('remove_my_shared_phone_entry', {'id': shared_entry.id}) }}">cancel</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('phone_book_entry_index') }}" class="btn btn-warning">back to my list</a>
+{% endblock %}

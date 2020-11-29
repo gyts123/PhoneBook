@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a href="/pbEntry" class="navbar-brand">PhoneBook</a>
+    <a href="/" class="navbar-brand">PhoneBook</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -10,6 +10,9 @@
                 <a class="nav-link" href="/pbEntry">Home</a>
             </li>
             {% if is_granted('ROLE_USER') %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/myShared/entries">My Shared Numbers</a>
+                </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/shared/entries">Shared Numbers</a>
                 </li>
