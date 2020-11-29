@@ -5,17 +5,15 @@ namespace App\Controller;
 use App\Entity\PhoneBookEntry;
 use App\Form\PhoneBookEntryType;
 use App\Repository\PhoneBookEntryRepository;
-use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class PhoneBookEntryController extends AbstractController
 {
     /**
-     * @Route("/", name="phone_book_entry_index", methods={"GET","POST"})
+     * @Route("/pbEntry", name="phone_book_entry_index", methods={"GET"})
      * @param PhoneBookEntryRepository $phoneBookEntryRepository
      * @return Response
      */
@@ -27,7 +25,7 @@ class PhoneBookEntryController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="phone_book_entry_new", methods={"GET","POST"})
+     * @Route("/pbEntry/new", name="phone_book_entry_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
      */
@@ -52,7 +50,7 @@ class PhoneBookEntryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="phone_book_entry_show", methods={"GET"})
+     * @Route("/pbEntry/{id}", name="phone_book_entry_show", methods={"GET"})
      * @param PhoneBookEntry $phoneBookEntry
      * @return Response
      */
@@ -64,7 +62,7 @@ class PhoneBookEntryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="phone_book_entry_edit", methods={"GET","POST"})
+     * @Route("/pbEntry/{id}/edit", name="phone_book_entry_edit", methods={"GET","POST"})
      * @return Response
      */
     public function edit(Request $request, PhoneBookEntry $phoneBookEntry): Response
@@ -85,7 +83,7 @@ class PhoneBookEntryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="phone_book_entry_delete", methods={"DELETE"})
+     * @Route("/pbEntry/{id}", name="phone_book_entry_delete", methods={"DELETE"})
      * @param Request $request
      * @param PhoneBookEntry $phoneBookEntry
      * @return Response
