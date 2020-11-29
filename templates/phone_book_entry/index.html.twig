@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PhoneBookEntry index{% endblock %}
+
+{% block body %}
+    <form action="{{ path('phone_book_entry_new') }}">
+        <h1>PhoneBook</h1>
+        <button type="submit" class="btn btn-primary">Create new</button>
+        <br>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>PhoneNumber</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for phone_book_entry in phone_book_entries %}
+                <tr>
+                    <td>{{ phone_book_entry.name }}</td>
+                    <td>{{ phone_book_entry.phoneNumber }}</td>
+                    <td>
+                        <a href="{{ path('phone_book_entry_show', {'id': phone_book_entry.id}) }}">show</a>
+                        <a href="{{ path('phone_book_entry_edit', {'id': phone_book_entry.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+{% endblock %}

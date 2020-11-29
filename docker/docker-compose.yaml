@@ -2,8 +2,18 @@ version: '2'
 services:
     mysql:
         image: mysql
+        command: ['--character-set-server=utf8mb4','--collation-server=utf8mb4_unicode_ci','--default-authentication-plugin=mysql_native_password']
+        environment:
+            MYSQL_DATABASE: phoneBook_db
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: root
         ports:
-            - '5433:5432'
+            - '3306:3306'
+        volumes:
+            - ./mysql:/var/lib/mysql
+        networks:
+            - symfony
     php:
         build: php-fpm
         ports:
@@ -13,6 +23,8 @@ services:
             - ./logs/symfony:/var/www/symfony/var/logs:cached
         links:
             - mysql
+        networks:
+            - symfony
     nginx:
         build: nginx
         ports:
@@ -23,3 +35,7 @@ services:
             - php
         volumes:
             - ./logs/nginx/:/var/log/nginx:cached
+        networks:
+            - symfony
+networks:
+    symfony:
