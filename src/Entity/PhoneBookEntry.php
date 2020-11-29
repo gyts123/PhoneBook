@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PhoneBookEntryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass=PhoneBookEntryRepository::class)
@@ -26,6 +27,16 @@ class PhoneBookEntry
      * @ORM\Column(type="text", length=50)
      */
     private $phoneNumber;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
 
     public function getId(): ?int
     {
@@ -50,5 +61,17 @@ class PhoneBookEntry
     public function setPhoneNumber(string $phoneNumber): void
     {
         $this->phoneNumber = $phoneNumber;
+    }
+
+    public function getFkUser()
+    {
+        return $this->fkUser;
+    }
+
+    public function setFkUser(?User $fkUser): self
+    {
+        $this->fkUser = $fkUser;
+
+        return $this;
     }
 }

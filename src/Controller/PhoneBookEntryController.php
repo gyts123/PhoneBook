@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\PhoneBookEntry;
+use App\Entity\SharedEntries;
 use App\Form\PhoneBookEntryType;
 use App\Repository\PhoneBookEntryRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +22,7 @@ class PhoneBookEntryController extends AbstractController
     public function index(PhoneBookEntryRepository $phoneBookEntryRepository): Response
     {
         return $this->render('phone_book_entry/index.html.twig', [
-            'phone_book_entries' => $phoneBookEntryRepository->findAll(),
+            'phone_book_entries' => $phoneBookEntryRepository->findByUser($this->getUser()->getId()),// findAll(),
         ]);
     }
 
@@ -36,6 +38,7 @@ class PhoneBookEntryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $phoneBookEntry->setFkUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($phoneBookEntry);
             $entityManager->flush();
@@ -95,6 +98,35 @@ class PhoneBookEntryController extends AbstractController
             $entityManager->remove($phoneBookEntry);
             $entityManager->flush();
         }
+
+        return $this->redirectToRoute('phone_book_entry_index');
+    }
+
+    /**
+     * @Route("/pbEntry/{id}/share", name="phone_book_entry_share", methods={"GET"})
+     * @return Response
+     */
+    public function share(int $id, UserRepository $userRepository, PhoneBookEntryRepository $phoneBookEntryRepository): Response
+    {
+        return $this->render('phone_book_entry/share.html.twig',[
+            'entry' => $phoneBookEntryRepository->find($id),
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+    /**
+     * @Route("/pbEntry/{id}/{userId}/share", name="phone_book_entry_share_submit", methods={"GET"})
+     * @return Response
+     */
+    public function shareSubmit(int $id, int $userId, UserRepository $userRepository, PhoneBookEntryRepository $phoneBookEntryRepository): Response
+    {
+        $sharedEntry = new SharedEntries();
+        $sharedEntry->setFkUser($userRepository->find($userId));
+        $sharedEntry->setFkPhoneBookEntry($phoneBookEntryRepository->find($id));
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($sharedEntry);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Successfully shared Phone entry!');
 
         return $this->redirectToRoute('phone_book_entry_index');
     }

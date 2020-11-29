@@ -19,6 +19,11 @@ class PhoneBookEntryRepository extends ServiceEntityRepository
         parent::__construct($registry, PhoneBookEntry::class);
     }
 
+    public function findByUser(int $userId)
+    {
+        return $this->findBy(['fkUser' => $userId]);
+    }
+
     // /**
     //  * @return PhoneBookEntry[] Returns an array of PhoneBookEntry objects
     //  */

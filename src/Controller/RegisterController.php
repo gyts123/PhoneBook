@@ -23,7 +23,7 @@ class RegisterController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
-        $form =$this->createFormBuilder()
+        $form = $this->createFormBuilder()
             ->add('username', TextType::class, [
                 'required' => true,
                 'label' => 'Username'
@@ -42,9 +42,14 @@ class RegisterController extends AbstractController
             ->getForm();
 
         $form->handleRequest($request);
-        if($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             $data = $form->getData();
 
+            if (!isset($data['password'])) {
+                $this->addFlash('passwords_not_matching', 'Passwords are not matching!');
+
+                return $this->redirectToRoute('register');
+            }
             $user = $this->setUserData($data, $encoder);
             $this->flushUserData($user);
 
@@ -61,7 +66,7 @@ class RegisterController extends AbstractController
      * @param UserPasswordEncoderInterface $encoder
      * @return User
      */
-    protected function setUserData($data, UserPasswordEncoderInterface $encoder): User
+    protected function setUserData(array $data, UserPasswordEncoderInterface $encoder): User
     {
         $user = new User();
         $user->setUsername($data['username']);
