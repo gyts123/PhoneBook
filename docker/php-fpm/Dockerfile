@@ -15,6 +15,6 @@ RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Europe/Vilnius /etc/localtime
 RUN "date"
 
-RUN /bin/sh -c composer install
-
 WORKDIR /var/www/symfony
+
+RUN /bin/sh -c composer install
