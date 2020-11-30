@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -45,8 +46,13 @@ class RegisterController extends AbstractController
         if ($form->isSubmitted()) {
             $data = $form->getData();
 
+            if ($this->checkIfUsernameExists($data)) {
+                $this->addFlash('register_error', 'Username is allready in use!');
+
+                return $this->redirectToRoute('register');
+            }
             if (!isset($data['password'])) {
-                $this->addFlash('passwords_not_matching', 'Passwords are not matching!');
+                $this->addFlash('register_error', 'Passwords are not matching!');
 
                 return $this->redirectToRoute('register');
             }
@@ -66,7 +72,7 @@ class RegisterController extends AbstractController
      * @param UserPasswordEncoderInterface $encoder
      * @return User
      */
-    protected function setUserData(array $data, UserPasswordEncoderInterface $encoder): User
+    private function setUserData(array $data, UserPasswordEncoderInterface $encoder): User
     {
         $user = new User();
         $user->setUsername($data['username']);
@@ -79,10 +85,32 @@ class RegisterController extends AbstractController
     /**
      * @param User $user
      */
-    protected function flushUserData(User $user): void
+    private function flushUserData(User $user): void
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getEntityManager();
         $em->persist($user);
         $em->flush();
+    }
+
+    /**
+     * @return ObjectManager
+     */
+    private function getEntityManager(): ObjectManager
+    {
+        return $this->getDoctrine()->getManager();
+    }
+
+    /**
+     * @param $data
+     * @return bool
+     */
+    private function checkIfUsernameExists($data): bool
+    {
+        $em = $this->getEntityManager();
+        if (count($users = $em->getRepository(User::class)->findBy(array('username' => $data))) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

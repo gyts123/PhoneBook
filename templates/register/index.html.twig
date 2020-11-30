@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for message in app.flashes('passwords_not_matching') %}
+    {% for message in app.flashes('register_error') %}
         <div class="alert alert-danger" role="alert">
             {{ message }}
         </div>

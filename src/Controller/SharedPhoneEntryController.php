@@ -17,10 +17,8 @@ class SharedPhoneEntryController extends AbstractController
      */
     public function sharedEntryList(SharedEntriesRepository $sharedEntriesRepository): Response
     {
-        $sharedEntries = $sharedEntriesRepository->findByUser($this->getUser()->getId());
-
         return $this->render('shared_phone_entry/index.html.twig', [
-            'shared_entries' => $sharedEntries,
+            'shared_entries' => $sharedEntriesRepository->findByUser($this->getUser()->getId()),
         ]);
     }
 
@@ -31,9 +29,8 @@ class SharedPhoneEntryController extends AbstractController
      */
     public function mySharedEntryList(SharedEntriesRepository $sharedEntriesRepository): Response
     {
-        $sharedEntries = $sharedEntriesRepository->findEntriesThatWereSharedByUser($this->getUser()->getId());
         return $this->render('shared_phone_entry/my_shared_list.html.twig', [
-            'shared_entries' => $sharedEntries,
+            'shared_entries' => $sharedEntriesRepository->findEntriesThatWereSharedByUser($this->getUser()->getId()),
         ]);
     }
 
