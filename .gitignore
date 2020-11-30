@@ -21,6 +21,7 @@
 
 # Logs (docker)
 /docker/logs/*
+/docker/mysql/*
 
 # Parameters
 /app/config/parameters.yml
@@ -59,3 +60,5 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+.idea/*
